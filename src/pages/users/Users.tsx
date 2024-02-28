@@ -9,24 +9,18 @@ import axios from "axios";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 90 },
+  // {
+  //   field: "img",
+  //   headerName: "Avatar",
+  //   width: 100,
+  //   renderCell: (params) => {
+  //     return <img src={params.row.img || "/noavatar.png"} alt="" />;
+  //   },
+  // },
   {
-    field: "img",
-    headerName: "Avatar",
-    width: 100,
-    renderCell: (params) => {
-      return <img src={params.row.img || "/noavatar.png"} alt="" />;
-    },
-  },
-  {
-    field: "firstName",
+    field: "name",
     type: "string",
-    headerName: "First name",
-    width: 150,
-  },
-  {
-    field: "lastName",
-    type: "string",
-    headerName: "Last name",
+    headerName: "Name",
     width: 150,
   },
   {
@@ -36,23 +30,24 @@ const columns: GridColDef[] = [
     width: 200,
   },
   {
-    field: "phone",
+    field: "role",
     type: "string",
-    headerName: "Phone",
-    width: 200,
+    headerName: "Role",
+    width: 150,
   },
+  // {
+  //   field: "phone",
+  //   type: "string",
+  //   headerName: "Phone",
+  //   width: 200,
+  // },
   {
     field: "createdAt",
-    headerName: "Created At",
+    headerName: "Joining Date",
     width: 200,
     type: "string",
-  },
-  {
-    field: "verified",
-    headerName: "Verified",
-    width: 150,
-    type: "boolean",
-  },
+    renderCell: (params) => new Date(params.row?.createdAt).toDateString()
+  }
 ];
 
 const Users = () => {
@@ -61,42 +56,49 @@ const Users = () => {
   // TEST THE API
 
   // const { isLoading, data } = useQuery({
-  //   queryKey: ["allusers"],
+  //   queryKey: ["allproducts"],
   //   queryFn: () =>
-  //     fetch("http://localhost:8800/api/users").then(
+  //     fetch("http://localhost:8800/api/products").then(
   //       (res) => res.json()
   //     ),
   // });
 
-  const [users, setUsers] = useState([]);
+  const [orders, setOrders] = useState([]);
 
-  useEffect(() => {
-    // getAllProducts({});
-    axios.get('http://localhost:9000/v1/users/').then((res) => {
-    // axios.get('https://jsonplaceholder.typicode.com/todos').then((res) => {
-      setUsers(res.data.data);
-      // setProducts(res.data)
-      // setPage(res.data.page)
-      console.log('users', res.data.data);
-      // console.log('current page', res.data.page);
-    });
-  }, []);
+  const tokenString = localStorage.getItem('user-info');
+  const token = JSON.parse(tokenString);
+  console.log('token', token);
+useEffect(() => {
+  // getAllProducts({});
+  axios.get('http://localhost:9000/v1/users/',{
+    headers:{
+      'Authorization': `Bearer ${token.token}`
+    }
+  }).then((res) => {
+  // axios.get('https://jsonplaceholder.typicode.com/todos').then((res) => {
+    setOrders(res.data.data);
+    // setProducts(res.data)
+    // setPage(res.data.page)
+    console.log('orders', res.data.data);
+    // console.log('current page', res.data.page);
+  });
+}, []);
 
   return (
-    <div className="users">
+    <div className="orders">
       <div className="info">
-        <h1>Users</h1>
-        <button onClick={() => setOpen(true)}>Add New User</button>
+        <h1>Orders</h1>
+        <button onClick={() => setOpen(true)}>Add New Orders</button>
       </div>
-      <DataTable slug="users" columns={columns} rows={userRows} />
+      <DataTable slug="orders" columns={columns} rows={orders} />
       {/* TEST THE API */}
 
       {/* {isLoading ? (
         "Loading..."
       ) : (
-        <DataTable slug="users" columns={columns} rows={data} />
+        <DataTable slug="products" columns={columns} rows={data} />
       )} */}
-      {open && <Add slug="user" columns={columns} setOpen={setOpen} />}
+      {open && <Add slug="order" columns={columns} setOpen={setOpen} />}
     </div>
   );
 };

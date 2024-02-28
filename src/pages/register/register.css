@@ -32,7 +32,7 @@
     border-radius: 3px;
   }
   
-  button {
+  .register-btn {
     width: 100%;
     padding: 10px;
     background-color: #007bff;
@@ -42,7 +42,7 @@
     cursor: pointer;
   }
   
-  button:hover {
+  .register-btn:hover {
     background-color: #0056b3;
   }
   

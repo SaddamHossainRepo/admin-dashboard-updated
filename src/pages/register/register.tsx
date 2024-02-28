@@ -44,7 +44,8 @@ const Register = () => {
     // router.push('/dashboard');
   };
 
-  const handleRegister = async () => {
+  const handleRegister = async (e) => {
+    e.preventDefault();
     // eslint-disable-next-line prefer-const
     let item = { name, email, password };
     console.log(item);
@@ -143,6 +144,7 @@ const Register = () => {
               label="Remember me"
             />
             <Button
+            className="register-btn"
               type="submit"
               fullWidth
               variant="contained"

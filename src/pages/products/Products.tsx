@@ -8,14 +8,14 @@ import axios from "axios";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 90 },
-  {
-    field: "image",
-    headerName: "Image",
-    width: 100,
-    renderCell: (params) => {
-      return <img src={params.row.img || "/noavatar.png"} alt="" />;
-    },
-  },
+  // {
+  //   field: "image",
+  //   headerName: "Image",
+  //   width: 100,
+  //   renderCell: (params) => {
+  //     return <img src={params.row.img || "/noavatar.png"} alt="" />;
+  //   },
+  // },
   {
     field: "name",
     type: "string",
@@ -47,6 +47,7 @@ const columns: GridColDef[] = [
     headerName: "Created At",
     width: 200,
     type: "string",
+    renderCell: (params) => new Date(params.row?.createdAt).toDateString()
   },
   // {
   //   field: "inStock",
@@ -72,10 +73,11 @@ const Products = () => {
   // });
 
   const [products, setProducts] = useState([]);
+  const [page, setPage] = useState(0);
 
 useEffect(() => {
   // getAllProducts({});
-  axios.get('http://localhost:9000/v1/products/').then((res) => {
+  axios.get(`http://localhost:9000/v1/products/?page=${page}&limit=100`).then((res) => {
   // axios.get('https://jsonplaceholder.typicode.com/todos').then((res) => {
     setProducts(res.data.data);
     // setProducts(res.data)

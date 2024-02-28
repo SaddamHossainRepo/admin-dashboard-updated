@@ -30,7 +30,7 @@ const Login = () => {
       },
     });
     const result = await response.json();
-    console.log('result', result);
+    console.log('result', result, result.permissions, result.token);
     if (!result.token) {
       Swal.fire(result.message);
     } else {
@@ -105,6 +105,7 @@ const Login = () => {
             label="Remember me"
           />
           <Button
+          className="login-btn"
             type="submit"
             fullWidth
             variant="contained"
